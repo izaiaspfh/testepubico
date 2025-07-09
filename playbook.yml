@@ -1,0 +1,8 @@
+- name: Teste AWX
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Mostrar mensagem
+      debug:
+        msg: "AWX com GitHub funcionando - teste IZAIAS!"
+
