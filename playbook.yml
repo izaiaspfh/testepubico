@@ -1,6 +1,6 @@
 - name: Teste AWX
   hosts: all
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Mostrar mensagem
       debug:
