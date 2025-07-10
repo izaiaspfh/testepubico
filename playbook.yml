@@ -1,8 +1,12 @@
-- name: Teste AWX
+---
+- name: Criar diretório no host remoto
   hosts: all
-  gather_facts: true
+  become: yes
   tasks:
-    - name: Mostrar mensagem
-      debug:
-        msg: "AWX com GitHub funcionando - teste IZAIAS!"
-
+    - name: Criar diretório /tmp/meu_diretorio
+      file:
+        path: /tmp/meu_diretorio
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
