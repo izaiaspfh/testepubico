@@ -1,0 +1,8 @@
+- name: Executar comandos no Windows
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Criar pasta C:\Temp
+      win_file:
+        path: C:\Temp\iz
+        state: directory
