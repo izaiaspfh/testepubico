@@ -9,5 +9,5 @@
   tasks:
     - name: Criar diretório C:\Temp\iza
       win_file:
-        path: C:\Temp/iza
+        path: C:\Temp\iza
         state: directory
