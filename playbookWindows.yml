@@ -1,8 +1,13 @@
-- name: Executar comandos no Windows
+- name: Playbook para Windows via WinRM
   hosts: all
-  gather_facts: no
+  gather_facts: false
+  vars:
+    ansible_connection: winrm    
+    ansible_winrm_transport: basic
+    ansible_winrm_server_cert_validation: ignore
+
   tasks:
-    - name: Criar pasta C:\Temp
+    - name: Criar diretório C:\Temp\iza
       win_file:
-        path: C:\Temp\iz
+        path: C:\Temp/iza
         state: directory
