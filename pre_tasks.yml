@@ -6,7 +6,7 @@
     - name: Executar kinit com senha
       ansible.builtin.shell: |
         echo "{{ kerberos_password }}" | kinit {{ kerberos_principal }}
-      no_log: true
+      no_log: false
 
   tasks:
     - name: Teste de ping no Windows
