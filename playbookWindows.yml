@@ -1,6 +1,14 @@
 - name: Playbook para Windows via WinRM
   hosts: all
   gather_facts: false
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_transport: kerberos
+    ansible_user: srv_ansible@REDE.STF.GOV.BR
+    ansible_winrm_port: 5985
+    ansible_winrm_scheme: http
+    ansible_winrm_server_cert_validation: ignore
+	
   tasks:
     - name: Criar diretório C:\Temp\iza
       win_file:
