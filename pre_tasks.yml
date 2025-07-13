@@ -1,13 +1,25 @@
+
 - name: Playbook Windows com Kerberos
-  hosts: campogrande3
+  hosts: all
   gather_facts: no
 
   pre_tasks:
     - name: Executar kinit com senha
       ansible.builtin.shell: |
-        echo "{{ kerberos_password }}" | kinit {{ kerberos_principal }}
+        echo "{{ kerberos_password }}" | kinit -V {{ kerberos_principal }}
+      register: kinit_out
       no_log: false
+      failed_when: "'Password incorrect' in kinit_out.stderr"
+
+    - name: Verificar ticket Kerberos com klist
+      ansible.builtin.shell: klist
+      register: klist_out
+      changed_when: false
+
+    - name: Mostrar ticket Kerberos
+      debug:
+        var: klist_out.stdout_lines
 
   tasks:
-    - name: Teste de ping no Windows
+    - name: Testar comunicação com host Windows
       ansible.windows.win_ping:
