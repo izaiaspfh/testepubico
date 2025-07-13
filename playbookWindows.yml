@@ -9,7 +9,7 @@
     ansible_winrm_scheme: http
     ansible_winrm_server_cert_validation: ignore	
   tasks:
-    - name: Criar diretório "{{ pasta }}" com o usuário "{{ usuario }}" e "{{ ansible_password }}"
+    - name: Criar diretório "{{ pasta }}" com o usuário "{{ usuario }}"
       win_file:
         path: "{{ pasta }}"
         state: directory
