@@ -9,7 +9,7 @@
     ansible_winrm_scheme: http
     ansible_winrm_server_cert_validation: ignore	
   tasks:
-    - name: Criar diretório C:\Temp\iza
+    - name: Criar diretório "{{ pasta }}"
       win_file:
-        path: C:\Temp\iza
+        path: "{{ pasta }}"
         state: directory
