@@ -1,0 +1,29 @@
+---
+- name: Atualizar repositórios CentOS para o vault
+  hosts: todos
+  become: yes
+  tasks:
+    - name: Comentar mirrorlist nos arquivos de repositório
+      ansible.builtin.replace:
+        path: /etc/yum.repos.d/{{ item }}
+        regexp: '^mirrorlist='
+        replace: '#mirrorlist='
+      loop: "{{ lookup('ansible.builtin.find', '/etc/yum.repos.d', recurse=False, patterns='CentOS-*.repo', wantlist=True) }}"
+
+    - name: Descomentar e alterar baseurl para o vault
+      ansible.builtin.replace:
+        path: /etc/yum.repos.d/{{ item }}
+        regexp: '^#baseurl=http://mirror.centos.org'
+        replace: 'baseurl=http://vault.centos.org'
+      loop: "{{ lookup('ansible.builtin.find', '/etc/yum.repos.d', recurse=False, patterns='CentOS-*.repo', wantlist=True) }}"
+
+    - name: Limpar cache do yum
+      ansible.builtin.command: yum clean all
+
+    - name: Recriar cache do yum
+      ansible.builtin.command: yum makecache
+
+    - name: Atualizar todos os pacotes
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
