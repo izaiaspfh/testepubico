@@ -18,4 +18,4 @@
       ansible.builtin.shell: yum makecache
 
     - name: Atualizar todos os pacotes
-      ansible.builtin.shell: yum -y update
+      ansible.builtin.shell: yum -y update open-vm-tools
