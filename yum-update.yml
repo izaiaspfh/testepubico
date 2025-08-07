@@ -1,6 +1,6 @@
 ---
 - name: Atualizar repositórios CentOS para o vault
-  hosts: todos
+  hosts: all
   become: yes
   tasks:
     - name: Comentar mirrorlist nos arquivos de repositório
