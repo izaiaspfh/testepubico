@@ -17,5 +17,5 @@
     - name: Recriar cache do yum
       ansible.builtin.shell: yum makecache
 
-    - name: Atualizar todos os pacotes
+    - name: Atualizar open-vm-tools
       ansible.builtin.shell: yum -y update open-vm-tools
