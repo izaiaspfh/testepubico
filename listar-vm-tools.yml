@@ -1,0 +1,14 @@
+---
+- name: Verificar versão do open-vm-tools no CentOS
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Verificar se o open-vm-tools está instalado
+      ansible.builtin.shell: rpm -q open-vm-tools
+      register: resultado_vmtools
+      failed_when: false
+
+    - name: Mostrar versão do open-vm-tools
+      ansible.builtin.debug:
+        var: resultado_vmtools.stdout
