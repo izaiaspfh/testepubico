@@ -1,0 +1,44 @@
+---
+- name: Instalar e configurar o CrowdStrike Falcon Sensor
+  hosts: all
+  become: yes
+  vars:
+    artifactory_url: "https://fra.sgg.com.br/artifactory/falcon/falcon_ubuntu.deb"
+    download_path: "/opt/custom/falcon_ubuntu.deb"
+    falcon_cid: "A164xzxzxzxzxzxzxzxzxzx"
+    login: "{{ lookup('env', 'LOGIN') }}"
+    senha: "{{ lookup('env', 'SENHA') }}"
+
+  tasks:
+
+    - name: Criar diretório de destino se não existir
+      file:
+        path: /opt/custom
+        state: directory
+        mode: '0755'
+
+    - name: Baixar pacote Falcon do Artifactory
+      ansible.builtin.get_url:
+        url: "{{ artifactory_url }}"
+        dest: "{{ download_path }}"
+        url_username: "{{ login }}"
+        url_password: "{{ senha }}"
+        validate_certs: no
+        mode: '0644'
+      register: falcon_download
+
+    - name: Instalar pacote .deb do Falcon
+      ansible.builtin.apt:
+        deb: "{{ download_path }}"
+      when: falcon_download is succeeded
+
+    - name: Configurar CID do Falcon
+      ansible.builtin.command:
+        cmd: "/opt/CrowdStrike/falconctl -s --cid={{ falcon_cid }}"
+      changed_when: false  # evita marcar como alterado toda vez que rodar
+
+    - name: Habilitar e iniciar o serviço do Falcon Sensor
+      ansible.builtin.systemd:
+        name: falcon-sensor
+        state: started
+        enabled: yes
