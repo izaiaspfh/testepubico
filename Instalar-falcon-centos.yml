@@ -21,7 +21,8 @@
 
     - name: Instalar pacote .rpm do Falcon
       ansible.builtin.yum:
-        deb: "{{ download_path }}"
+        name: "{{ download_path }}"
+        state: present
       when: falcon_download is succeeded
 
     - name: Configurar CID do Falcon
