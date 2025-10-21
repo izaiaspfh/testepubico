@@ -2,12 +2,6 @@
 - name: Instalar e configurar o CrowdStrike Falcon Sensor
   hosts: all
   become: yes
-  vars:
-    artifactory_url: "https://fra.sgg.com.br/artifactory/falcon/falcon_ubuntu.deb"
-    download_path: "/opt/custom/falcon_ubuntu.deb"
-    falcon_cid: "A164xzxzxzxzxzxzxzxzxzx"
-    login: "{{ lookup('env', 'LOGIN') }}"
-    senha: "{{ lookup('env', 'SENHA') }}"
 
   tasks:
 
