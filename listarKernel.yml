@@ -6,7 +6,7 @@
 
   tasks:
     - name: Verificar versão do kernel
-      command: uname -r
+      command: uname -a
       register: kernel_versao
 
     - name: Exibir versão do kernel
