@@ -1,6 +1,6 @@
 ---
 - name: Listar versão do kernel nos servidores CentOS
-  hosts: centos
+  hosts: all
   gather_facts: no
   become: yes
 
