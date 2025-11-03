@@ -1,0 +1,14 @@
+---
+- name: Listar versão do kernel nos servidores CentOS
+  hosts: centos
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Verificar versão do kernel
+      command: uname -r
+      register: kernel_versao
+
+    - name: Exibir versão do kernel
+      debug:
+        msg: "Servidor {{ inventory_hostname }} está rodando o kernel {{ kernel_versao.stdout }}"
