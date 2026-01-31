@@ -1,0 +1,24 @@
+---
+- name: Remover observiq otel collector
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Parar o serviço observiq-otel-collector
+      systemd:
+        name: observiq-otel-collector
+        state: stopped
+        enabled: false
+      ignore_errors: true
+
+    - name: Remover pacote observiq-otel-collector
+      apt:
+        name: observiq-otel-collector
+        state: absent
+        purge: true
+        update_cache: false
+
+    - name: Remover diretório /opt/observiq-otel-collector
+      file:
+        path: /opt/observiq-otel-collector
+        state: absent
