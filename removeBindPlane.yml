@@ -1,24 +1,34 @@
 ---
-- name: Remover observiq otel collector
+- name: Remover observiq otel collector (multi-distro)
   hosts: all
   become: true
+
   tasks:
 
-    - name: Parar o serviço observiq-otel-collector
+    - name: Parar e desabilitar o serviço observiq-otel-collector
       systemd:
         name: observiq-otel-collector
         state: stopped
         enabled: false
       ignore_errors: true
 
-    - name: Remover pacote observiq-otel-collector
+    - name: Remover pacote (todas as distros)
+      package:
+        name: observiq-otel-collector
+        state: absent
+
+    - name: Purge do pacote (somente Debian/Ubuntu)
       apt:
         name: observiq-otel-collector
         state: absent
         purge: true
-        update_cache: false
+      when: ansible_os_family == "Debian"
 
     - name: Remover diretório /opt/observiq-otel-collector
       file:
         path: /opt/observiq-otel-collector
         state: absent
+
+    - name: Reload systemd
+      command: systemctl daemon-reload
+
