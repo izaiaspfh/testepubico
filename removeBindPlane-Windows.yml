@@ -1,5 +1,5 @@
 - name: Remover observIQ Distro for OpenTelemetry Collector
-  hosts: windows
+  hosts: all
   gather_facts: no
 
   vars:
