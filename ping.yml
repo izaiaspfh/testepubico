@@ -1,0 +1,8 @@
+---
+- name: Testar conexão com os hosts
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Testar conectividade via Ansible
+      ansible.builtin.ping:
