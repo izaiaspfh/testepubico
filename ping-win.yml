@@ -10,4 +10,4 @@
     ansible_winrm_server_cert_validation: ignore	
   tasks:
     - name: Pinga pinga
-      ansible.builtin.ping:
+      win_ping:
