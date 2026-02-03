@@ -11,16 +11,25 @@
     ansible_winrm_server_cert_validation: ignore
 
   tasks:
-    - name: Procurar observIQ via WMI
+    - name: Buscar GUID do observIQ no registro
       win_shell: |
-        Get-WmiObject -Class Win32_Product |
-        Where-Object { $_.Name -like "*observIQ*" } |
-        Select-Object IdentifyingNumber, Name
-      register: observiq_pkg
+        $paths = @(
+          "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
+          "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
+        )
+
+        foreach ($p in $paths) {
+          Get-ItemProperty $p -ErrorAction SilentlyContinue |
+          Where-Object { $_.DisplayName -like "*observIQ*" } |
+          Select-Object -ExpandProperty PSChildName
+        }
+      register: observiq_guid
+      changed_when: false
 
     - name: Remover observIQ
       win_package:
-        product_id: "{{ item.IdentifyingNumber }}"
+        product_id: "{{ item }}"
         state: absent
-      loop: "{{ observiq_pkg.stdout_lines | map('from_json') | list }}"
-      when: observiq_pkg.stdout != ""
+      loop: "{{ observiq_guid.stdout_lines }}"
+      when: observiq_guid.stdout_lines | length > 0
+
