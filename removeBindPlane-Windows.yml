@@ -11,13 +11,16 @@
     ansible_winrm_server_cert_validation: ignore
 
   tasks:
-    - name: Verificar se o observIQ está instalado
-      win_package_facts:
-      register: pkg_facts
+    - name: Procurar observIQ via WMI
+      win_shell: |
+        Get-WmiObject -Class Win32_Product |
+        Where-Object { $_.Name -like "*observIQ*" } |
+        Select-Object IdentifyingNumber, Name
+      register: observiq_pkg
 
-    - name: Remover observIQ Distro for OpenTelemetry Collector
+    - name: Remover observIQ
       win_package:
-        product_id: "{{ item.product_id }}"
+        product_id: "{{ item.IdentifyingNumber }}"
         state: absent
-      loop: "{{ pkg_facts.packages }}"
-      when: "'observIQ Distro for OpenTelemetry Collector' in item.name"
+      loop: "{{ observiq_pkg.stdout_lines | map('from_json') | list }}"
+      when: observiq_pkg.stdout != ""
