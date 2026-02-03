@@ -1,0 +1,16 @@
+---
+- name: Remover observIQ Distro for OpenTelemetry Collector
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+    - name: Verificar se o observIQ está instalado
+      win_package_facts:
+      register: pkg_facts
+
+    - name: Remover observIQ Distro for OpenTelemetry Collector
+      win_package:
+        product_id: "{{ item.product_id }}"
+        state: absent
+      loop: "{{ pkg_facts.packages }}"
+      when: "'observIQ Distro for OpenTelemetry Collector' in item.name"
