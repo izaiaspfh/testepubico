@@ -1,0 +1,27 @@
+- name: Listar hosts com observIQ instalado
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+    - name: Verificar observIQ no registro
+      win_shell: |
+        $paths = @(
+          "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
+          "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
+        )
+
+        foreach ($p in $paths) {
+          Get-ItemProperty $p -ErrorAction SilentlyContinue |
+          Where-Object { $_.DisplayName -like "*observIQ*" } |
+          Select-Object -ExpandProperty DisplayName
+        }
+      register: observiq_check
+      changed_when: false
+
+    - name: Resultado
+      debug:
+        msg: >
+          {{ inventory_hostname }} {{
+          'POSSUI observIQ instalado' if observiq_check.stdout_lines | length > 0
+          else 'NÃO possui observIQ instalado'
+          }}
