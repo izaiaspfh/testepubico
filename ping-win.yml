@@ -1,0 +1,12 @@
+- name: Playbook para Windows via WinRM
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_transport: kerberos    
+    ansible_winrm_port: 5985
+    ansible_winrm_scheme: http
+    ansible_winrm_server_cert_validation: ignore	
+  tasks:
+    - name: Pinga pinga
+      ansible.builtin.ping:
