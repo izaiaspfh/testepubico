@@ -20,7 +20,7 @@
 
         foreach ($p in $paths) {
           Get-ItemProperty $p -ErrorAction SilentlyContinue |
-          Where-Object { $_.DisplayName -like "*observIQ*" } |
+          Where-Object { $_.DisplayName -eq "observIQ Distro for OpenTelemetry Collector" } |
           Select-Object -ExpandProperty DisplayName
         }
       register: observiq_check
