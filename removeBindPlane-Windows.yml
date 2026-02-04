@@ -11,25 +11,10 @@
     ansible_winrm_server_cert_validation: ignore
 
   tasks:
-    - name: Buscar GUID do observIQ no registro
-      win_shell: |
-        $paths = @(
-          "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
-          "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
-        )
-
-        foreach ($p in $paths) {
-          Get-ItemProperty $p -ErrorAction SilentlyContinue |
-          Where-Object { $_.DisplayName -like "*observIQ*" } |
-          Select-Object -ExpandProperty PSChildName
-        }
-      register: observiq_guid
-      changed_when: false
-
-    - name: Remover observIQ
+    - name: Remover observIQ pelo nome do pacote
       win_package:
-        product_id: "{{ item }}"
+        name: "observIQ Distro for OpenTelemetry Collector"
         state: absent
-      loop: "{{ observiq_guid.stdout_lines }}"
-      when: observiq_guid.stdout_lines | length > 0
+        arguments: /qn
+
 
