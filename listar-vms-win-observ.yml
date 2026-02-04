@@ -30,6 +30,6 @@
       debug:
         msg: >
           {{ inventory_hostname }} {{
-          'POSSUI observIQ instalado' if observiq_check.stdout_lines | length > 0
-          else 'NÃO possui observIQ instalado'
+          'INSTALADO' if observiq_check.stdout_lines | length > 0
+          else 'NADA'
           }}
