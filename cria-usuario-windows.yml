@@ -1,6 +1,6 @@
 ---
 - name: Criar usuario local e adicionar ao Administrators
-  hosts: windows
+  hosts: all
   gather_facts: no
 
   vars:
