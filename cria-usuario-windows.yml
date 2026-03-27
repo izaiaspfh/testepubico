@@ -6,7 +6,7 @@
   vars:
     ansible_connection: winrm
     ansible_winrm_transport: kerberos
-    ansible_user: "{{ usuarioansible }}"
+    ansible_user: "{{ usuario }}"
     ansible_winrm_port: 5985
     ansible_winrm_scheme: http
     ansible_winrm_server_cert_validation: ignore
@@ -15,7 +15,7 @@
 
     - name: Criar usuario local
       ansible.windows.win_user:
-        name: "{{ usuario }}"
+        name: "{{ usuario2 }}"
         password: "{{ senha }}"
         state: present
         password_never_expires: yes
@@ -24,5 +24,5 @@
       ansible.windows.win_group_membership:
         name: Administrators
         members:
-          - "{{ usuario }}"
+          - "{{ usuario2 }}"
         state: present
