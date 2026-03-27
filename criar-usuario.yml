@@ -4,11 +4,6 @@
   become: yes
 
   tasks:
-
-    - name: Criar hash da senha
-      ansible.builtin.set_fact:
-        senha_hash: "{{ senha_plain | password_hash('sha512') }}"
-
     - name: Criar usuario
       ansible.builtin.user:
         name: "{{ usuario }}"
