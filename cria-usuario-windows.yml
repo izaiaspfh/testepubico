@@ -1,0 +1,20 @@
+---
+- name: Criar usuario local e adicionar ao Administrators
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+
+    - name: Criar usuario local
+      ansible.windows.win_user:
+        name: "{{ usuario }}"
+        password: "{{ senha }}"
+        state: present
+        password_never_expires: yes
+
+    - name: Adicionar ao grupo Administrators
+      ansible.windows.win_group_membership:
+        name: Administrators
+        members:
+          - "{{ usuario }}"
+        state: present
