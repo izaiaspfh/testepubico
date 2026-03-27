@@ -7,7 +7,7 @@
     - name: Criar usuario
       ansible.builtin.user:
         name: "{{ usuario }}"
-        password: "{{ senha_hash }}"
+        password: "{{ senha_plain }}"
         shell: /bin/bash
         create_home: yes
 
