@@ -1,0 +1,10 @@
+---
+- name: Alterar senha do root
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Alterar senha do root
+      ansible.builtin.user:
+        name: root
+        password: "{{ senha }}"
