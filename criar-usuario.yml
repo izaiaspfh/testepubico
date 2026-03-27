@@ -20,7 +20,7 @@
     - name: Garantir acesso sudo sem quebrar o sudoers
       ansible.builtin.copy:
         dest: "/etc/sudoers.d/{{ usuario }}"
-        content: "{{ usuario }} ALL=(ALL:ALL) ALL"
+        content: "{{ usuario }} ALL=(ALL:ALL) NOPASSWD:ALL"
         owner: root
         group: root
         mode: '0440'
