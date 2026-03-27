@@ -1,0 +1,32 @@
+---
+- name: Criar usuario com sudo no Ubuntu 24
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Criar hash da senha
+      ansible.builtin.set_fact:
+        senha_hash: "{{ senha_plain | password_hash('sha512') }}"
+
+    - name: Criar usuario
+      ansible.builtin.user:
+        name: "{{ usuario }}"
+        password: "{{ senha_hash }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Adicionar usuario ao grupo sudo
+      ansible.builtin.user:
+        name: "{{ usuario }}"
+        groups: sudo
+        append: yes
+
+    - name: Garantir acesso sudo sem quebrar o sudoers
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ usuario }}"
+        content: "{{ usuario }} ALL=(ALL:ALL) ALL"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: "/usr/sbin/visudo -cf %s"
